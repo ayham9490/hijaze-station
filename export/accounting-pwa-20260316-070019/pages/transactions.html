@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>العمليات المالية</title>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="manifest" href="../manifest.json">
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <img src="../assets/logo.png" alt="الشعار">
+      <div>
+        <h1>العمليات المالية</h1>
+        <div data-user>جاري تحميل المستخدم...</div>
+      </div>
+    </div>
+  </header>
+  <main>
+    <nav data-nav></nav>
+    <section class="content">
+      <div class="notice" data-toast>أدخل عملية محاسبية مزدوجة بدقة.</div>
+      <form id="transaction-form">
+        <div class="grid-2">
+          <div>
+            <label>التاريخ</label>
+            <input type="date" name="date" required>
+          </div>
+          <div>
+            <label>الوصف</label>
+            <input type="text" name="description" required>
+          </div>
+          <div>
+            <label>الحساب المدين</label>
+            <select name="debit_account" required></select>
+          </div>
+          <div>
+            <label>الحساب الدائن</label>
+            <select name="credit_account" required></select>
+          </div>
+          <div>
+            <label>المبلغ</label>
+            <input type="number" name="amount" step="0.01" required>
+          </div>
+          <div>
+            <label>العملة</label>
+            <select name="currency" required>
+              <option value="USD">دولار أمريكي</option>
+              <option value="EUR">يورو</option>
+              <option value="TRY">ليرة تركية</option>
+              <option value="SYP">ليرة سورية</option>
+            </select>
+          </div>
+          <div>
+            <label>سعر الصرف مقابل الدولار</label>
+            <input type="number" name="exchange_rate" step="0.0001" required>
+          </div>
+        </div>
+        <button type="submit" data-protected>حفظ العملية</button>
+      </form>
+      <div class="toolbar">
+        <button class="secondary" id="sync-btn">مزامنة العمليات غير المتصلة</button>
+      </div>
+      <h3>سجل العمليات</h3>
+      <div id="transactions-table"></div>
+    </section>
+  </main>
+  <div class="footer">دعم شامل للقيود المزدوجة والعملة المتعددة.</div>
+
+  <script type="module">
+    import '../app.js';
+    import { fetchAccounts } from '../modules/accounts.js';
+    import { fetchTransactions, createTransaction, syncOffline } from '../modules/transactions.js';
+    import { buildTable } from '../modules/ui.js';
+    import { requireRole } from '../modules/auth.js';
+
+    const form = document.getElementById('transaction-form');
+    const debitSelect = form.querySelector('select[name="debit_account"]');
+    const creditSelect = form.querySelector('select[name="credit_account"]');
+
+    const loadAccounts = async () => {
+      const accounts = await fetchAccounts();
+      const options = accounts.map(acc => `<option value="${acc.id}">${acc.name} - ${acc.currency}</option>`).join('');
+      debitSelect.innerHTML = options;
+      creditSelect.innerHTML = options;
+    };
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!requireRole(['admin', 'محاسب'])) return;
+      const payload = Object.fromEntries(new FormData(form));
+      payload.amount = Number(payload.amount) || 0;
+      payload.exchange_rate = Number(payload.exchange_rate) || 0;
+      const ok = await createTransaction(payload);
+      if (ok) {
+        form.reset();
+        loadTransactions();
+      }
+    });
+
+    document.getElementById('sync-btn').addEventListener('click', async () => {
+      await syncOffline();
+      loadTransactions();
+    });
+
+    const loadTransactions = async () => {
+      const transactions = await fetchTransactions();
+      const rows = transactions.map(tx => [
+        tx.date,
+        tx.description,
+        tx.amount,
+        tx.currency,
+        tx.exchange_rate,
+        tx.converted_usd
+      ]);
+      document.getElementById('transactions-table').innerHTML = buildTable(
+        ['التاريخ', 'الوصف', 'المبلغ', 'العملة', 'سعر الصرف', 'بالدولار'],
+        rows
+      );
+    };
+
+    loadAccounts();
+    loadTransactions();
+  </script>
+</body>
+</html>

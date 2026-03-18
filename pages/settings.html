@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#205f4f">
+  <title>الإعدادات | نظام المحاسبة</title>
+  <link rel="manifest" href="../manifest.json">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body data-page="settings">
+  <header>
+    <div class="brand">
+      <img src="../assets/logo.png" alt="شعار النظام">
+      <div>
+        <h1>الإعدادات</h1>
+        <p data-user>جاري تحميل بيانات المستخدم...</p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <nav data-nav></nav>
+
+    <section class="content">
+      <div class="notice" data-toast>إعدادات الاتصال والصلاحيات وأسعار الصرف الافتراضية.</div>
+
+      <section class="card">
+        <h3>إعداد اتصال Supabase</h3>
+        <form id="settings-supabase-form" autocomplete="off">
+          <div>
+            <label for="settings-url">SUPABASE_URL</label>
+            <input id="settings-url" name="url" type="url" required>
+          </div>
+          <div>
+            <label for="settings-key">SUPABASE_ANON_KEY</label>
+            <textarea id="settings-key" name="key" rows="4" required></textarea>
+          </div>
+          <button type="submit" data-action="settings:update">حفظ واختبار الاتصال</button>
+        </form>
+      </section>
+
+      <section class="card">
+        <h3>أسعار الصرف الافتراضية إلى الدولار</h3>
+        <form id="exchange-rates-form" autocomplete="off">
+          <div class="grid-2">
+            <div>
+              <label for="rate-usd">USD</label>
+              <input id="rate-usd" name="USD" type="number" step="0.000001" value="1" readonly>
+            </div>
+            <div>
+              <label for="rate-eur">EUR</label>
+              <input id="rate-eur" name="EUR" type="number" step="0.000001" required>
+            </div>
+            <div>
+              <label for="rate-try">TRY</label>
+              <input id="rate-try" name="TRY" type="number" step="0.000001" required>
+            </div>
+            <div>
+              <label for="rate-syp">SYP</label>
+              <input id="rate-syp" name="SYP" type="number" step="0.000001" required>
+            </div>
+          </div>
+          <button type="submit" class="secondary" data-action="settings:update">حفظ أسعار الصرف</button>
+        </form>
+      </section>
+
+      <section class="card">
+        <h3>إدارة أدوار المستخدمين</h3>
+        <form id="user-role-form" autocomplete="off">
+          <div class="grid-2">
+            <div>
+              <label for="role-user-select">المستخدم</label>
+              <select id="role-user-select" name="user_id" required></select>
+            </div>
+            <div>
+              <label for="role-select">الدور</label>
+              <select id="role-select" name="role" required></select>
+            </div>
+          </div>
+          <button type="submit" data-action="users:role:update">تحديث الدور</button>
+        </form>
+
+        <div id="settings-users-table"></div>
+      </section>
+
+      <section class="card">
+        <h3>جلسة المستخدم</h3>
+        <div class="toolbar">
+          <button class="danger" data-logout>تسجيل الخروج</button>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="footer">ضبط كامل للاتصال والأمان والصلاحيات في مكان واحد.</footer>
+
+  <script type="module" src="../app.js"></script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>دفتر الأستاذ</title>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="manifest" href="../manifest.json">
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <img src="../assets/logo.png" alt="الشعار">
+      <div>
+        <h1>دفتر الأستاذ</h1>
+        <div data-user>جاري تحميل المستخدم...</div>
+      </div>
+    </div>
+  </header>
+  <main>
+    <nav data-nav></nav>
+    <section class="content">
+      <div class="notice" data-toast>عرض تفصيلي لكل حساب وحركاته.</div>
+      <div id="ledger-container"></div>
+    </section>
+  </main>
+  <div class="footer">دفتر الأستاذ الكامل لكل الحسابات.</div>
+
+  <script type="module">
+    import '../app.js';
+    import { buildLedger } from '../modules/reports.js';
+    import { buildTable } from '../modules/ui.js';
+
+    const loadLedger = async () => {
+      const ledger = await buildLedger();
+      const container = document.getElementById('ledger-container');
+      container.innerHTML = ledger.map(block => {
+        const rows = block.items.map(item => [
+          item.date,
+          item.description,
+          item.amount,
+          item.currency,
+          item.debit_account === block.account.id ? 'مدين' : 'دائن'
+        ]);
+        return `
+          <div class="card">
+            <h3>${block.account.name} <span class="badge">${block.account.currency}</span></h3>
+            ${buildTable(['التاريخ', 'الوصف', 'المبلغ', 'العملة', 'النوع'], rows)}
+          </div>
+        `;
+      }).join('');
+    };
+
+    loadLedger();
+  </script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>الحسابات</title>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="manifest" href="../manifest.json">
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <img src="../assets/logo.png" alt="الشعار">
+      <div>
+        <h1>إدارة الحسابات</h1>
+        <div data-user>جاري تحميل المستخدم...</div>
+      </div>
+    </div>
+  </header>
+  <main>
+    <nav data-nav></nav>
+    <section class="content">
+      <div class="notice" data-toast>أضف حسابات جديدة مع تحديد العملة والنوع.</div>
+      <form id="account-form">
+        <div class="grid-2">
+          <div>
+            <label>اسم الحساب</label>
+            <input type="text" name="name" required>
+          </div>
+          <div>
+            <label>نوع الحساب</label>
+            <select name="type" required>
+              <option value="أصول">أصول</option>
+              <option value="خصوم">خصوم</option>
+              <option value="حقوق ملكية">حقوق ملكية</option>
+              <option value="إيرادات">إيرادات</option>
+              <option value="مصروفات">مصروفات</option>
+            </select>
+          </div>
+          <div>
+            <label>العملة</label>
+            <select name="currency" required>
+              <option value="USD">دولار أمريكي</option>
+              <option value="EUR">يورو</option>
+              <option value="TRY">ليرة تركية</option>
+              <option value="SYP">ليرة سورية</option>
+            </select>
+          </div>
+          <div>
+            <label>الرصيد الافتتاحي</label>
+            <input type="number" name="balance" step="0.01" value="0">
+          </div>
+        </div>
+        <button type="submit" data-protected>حفظ الحساب</button>
+      </form>
+      <h3>قائمة الحسابات</h3>
+      <div id="accounts-table"></div>
+    </section>
+  </main>
+  <div class="footer">إدارة دقيقة للحسابات مع دعم تعدد العملات.</div>
+
+  <script type="module">
+    import '../app.js';
+    import { fetchAccounts, createAccount } from '../modules/accounts.js';
+    import { buildTable, formatMoney } from '../modules/ui.js';
+    import { requireRole } from '../modules/auth.js';
+
+    const form = document.getElementById('account-form');
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!requireRole(['admin', 'محاسب'])) return;
+      const data = Object.fromEntries(new FormData(form));
+      const payload = {
+        ...data,
+        balance: Number(data.balance) || 0
+      };
+      await createAccount(payload);
+      form.reset();
+      loadAccounts();
+    });
+
+    const loadAccounts = async () => {
+      const accounts = await fetchAccounts();
+      const rows = accounts.map(acc => [
+        acc.name,
+        acc.type,
+        acc.currency,
+        formatMoney(acc.balance, acc.currency)
+      ]);
+      document.getElementById('accounts-table').innerHTML = buildTable(
+        ['الاسم', 'النوع', 'العملة', 'الرصيد'],
+        rows
+      );
+    };
+
+    loadAccounts();
+  </script>
+</body>
+</html>

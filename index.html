@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="نظام محاسبة احترافي يعمل كتطبيق ويب تقدمي مع Supabase ودعم كامل للغة العربية.">
+  <meta name="theme-color" content="#205f4f">
+  <title>نظام المحاسبة الاحترافي</title>
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body data-page="login">
+  <header>
+    <div class="brand">
+      <img src="./assets/logo.png" alt="شعار النظام">
+      <div>
+        <h1>نظام المحاسبة الاحترافي</h1>
+        <p>إدارة الحسابات والقيود والتقارير المالية ضمن تطبيق عربي كامل.</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="single-page">
+    <section class="content auth-layout">
+      <div class="notice" data-toast>يرجى إدخال بيانات الدخول، وإذا كانت هذه أول مرة فقم بضبط Supabase أولاً.</div>
+
+      <div class="grid-2">
+        <article class="card">
+          <h2>تسجيل الدخول</h2>
+          <form id="login-form" autocomplete="on">
+            <div>
+              <label for="email">البريد الإلكتروني</label>
+              <input id="email" name="email" type="email" required placeholder="name@example.com">
+            </div>
+            <div>
+              <label for="password">كلمة المرور</label>
+              <input id="password" name="password" type="password" required placeholder="********">
+            </div>
+            <button type="submit">دخول إلى النظام</button>
+          </form>
+        </article>
+
+        <article class="card">
+          <h2>إعداد Supabase</h2>
+          <p class="subline">احفظ بيانات الربط مرة واحدة، ويمكن تعديلها لاحقًا من صفحة الإعدادات.</p>
+          <form id="login-supabase-form" autocomplete="off">
+            <div>
+              <label for="supabase-url">رابط المشروع</label>
+              <input id="supabase-url" name="url" type="url" required placeholder="https://xxxxx.supabase.co">
+            </div>
+            <div>
+              <label for="supabase-key">المفتاح العام (Anon Key)</label>
+              <textarea id="supabase-key" name="key" rows="4" required placeholder="eyJhbGciOi..."></textarea>
+            </div>
+            <button type="submit" class="secondary">حفظ الإعدادات واختبار الاتصال</button>
+          </form>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">تطبيق محاسبة عربي يدعم العمل دون اتصال ومتوافق مع GitHub Pages وPWABuilder.</footer>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

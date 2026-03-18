@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>نظام المحاسبة الاحترافي</title>
+  <link rel="manifest" href="./manifest.json">
+  <link rel="stylesheet" href="./style.css">
+  <meta name="theme-color" content="#2d6a4f">
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <img src="./assets/logo.png" alt="الشعار">
+      <div>
+        <h1>نظام المحاسبة الاحترافي</h1>
+        <div>إدارة مالية كاملة بخطة مجانية</div>
+      </div>
+    </div>
+  </header>
+  <main>
+    <nav data-nav></nav>
+    <section class="content">
+      <div class="notice" data-toast>مرحباً بك، يرجى تسجيل الدخول للمتابعة.</div>
+      <form data-login>
+        <div>
+          <label>البريد الإلكتروني</label>
+          <input type="email" name="email" required>
+        </div>
+        <div>
+          <label>كلمة المرور</label>
+          <input type="password" name="password" required>
+        </div>
+        <button type="submit">تسجيل الدخول</button>
+      </form>
+      <p>يمكنك إنشاء مستخدم من لوحة Supabase ثم تسجيل الدخول هنا.</p>
+    </section>
+  </main>
+  <div class="footer">جاهز للعمل دون أدوات بناء وبواجهة عربية كاملة.</div>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

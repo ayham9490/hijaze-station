@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#205f4f">
+  <title>دفتر الأستاذ | نظام المحاسبة</title>
+  <link rel="manifest" href="../manifest.json">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body data-page="ledger">
+  <header>
+    <div class="brand">
+      <img src="../assets/logo.png" alt="شعار النظام">
+      <div>
+        <h1>دفتر الأستاذ</h1>
+        <p data-user>جاري تحميل بيانات المستخدم...</p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <nav data-nav></nav>
+
+    <section class="content">
+      <div class="notice" data-toast>اطّلع على الحركة التفصيلية لكل حساب مع الرصيد الجاري.</div>
+
+      <section class="card">
+        <div class="toolbar">
+          <div class="field-inline">
+            <label for="ledger-account-filter">فلترة حسب الحساب</label>
+            <select id="ledger-account-filter"></select>
+          </div>
+          <button id="ledger-apply-filter" class="secondary">تطبيق الفلتر</button>
+        </div>
+      </section>
+
+      <div id="ledger-results" class="stack"></div>
+    </section>
+  </main>
+
+  <footer class="footer">دفتر أستاذ كامل لمتابعة كل قيد محاسبي بدقة.</footer>
+
+  <script type="module" src="../app.js"></script>
+</body>
+</html>

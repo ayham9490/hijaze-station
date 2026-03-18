@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>التقارير</title>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="manifest" href="../manifest.json">
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <img src="../assets/logo.png" alt="الشعار">
+      <div>
+        <h1>التقارير المالية</h1>
+        <div data-user>جاري تحميل المستخدم...</div>
+      </div>
+    </div>
+  </header>
+  <main>
+    <nav data-nav></nav>
+    <section class="content">
+      <div class="notice" data-toast>استعرض التقارير وصدّرها بسهولة.</div>
+      <div class="toolbar">
+        <button id="csv-btn" class="secondary">تصدير CSV</button>
+        <button id="excel-btn" class="secondary">تصدير Excel</button>
+        <button id="print-btn" class="ghost">طباعة التقرير</button>
+      </div>
+      <h3>تقرير الحسابات</h3>
+      <div id="accounts-report"></div>
+      <h3>تقرير الأرباح والخسائر</h3>
+      <div id="pl-report"></div>
+      <h3>تقرير العمليات</h3>
+      <div id="transactions-report"></div>
+    </section>
+  </main>
+  <div class="footer">تقارير شاملة لكل نشاطاتك المالية.</div>
+
+  <script type="module">
+    import '../app.js';
+    import { buildAccountsReport, buildProfitLoss } from '../modules/reports.js';
+    import { fetchTransactions } from '../modules/transactions.js';
+    import { buildTable, downloadCSV, downloadExcel, formatMoney } from '../modules/ui.js';
+
+    let accountsTableHtml = '';
+    let transactionsTableHtml = '';
+
+    const loadReports = async () => {
+      const accountsRows = await buildAccountsReport();
+      accountsTableHtml = buildTable(['الاسم', 'النوع', 'العملة', 'الرصيد'], accountsRows);
+      document.getElementById('accounts-report').innerHTML = accountsTableHtml;
+
+      const pl = await buildProfitLoss();
+      const plRows = [
+        ['الإيرادات', formatMoney(pl.revenue, 'USD')],
+        ['المصروفات', formatMoney(pl.expenses, 'USD')],
+        ['صافي الربح', formatMoney(pl.net, 'USD')]
+      ];
+      document.getElementById('pl-report').innerHTML = buildTable(['البند', 'القيمة بالدولار'], plRows);
+
+      const transactions = await fetchTransactions();
+      const txRows = transactions.map(tx => [
+        tx.date,
+        tx.description,
+        tx.amount,
+        tx.currency,
+        tx.converted_usd
+      ]);
+      transactionsTableHtml = buildTable(['التاريخ', 'الوصف', 'المبلغ', 'العملة', 'بالدولار'], txRows);
+      document.getElementById('transactions-report').innerHTML = transactionsTableHtml;
+    };
+
+    document.getElementById('csv-btn').addEventListener('click', () => {
+      const headers = ['التاريخ', 'الوصف', 'المبلغ', 'العملة', 'بالدولار'];
+      const rows = Array.from(document.querySelectorAll('#transactions-report table tr')).slice(1).map(row =>
+        Array.from(row.children).map(cell => cell.textContent)
+      );
+      downloadCSV('transactions-report.csv', headers, rows);
+    });
+
+    document.getElementById('excel-btn').addEventListener('click', () => {
+      downloadExcel('reports.xls', `${accountsTableHtml}${transactionsTableHtml}`);
+    });
+
+    document.getElementById('print-btn').addEventListener('click', () => {
+      window.print();
+    });
+
+    loadReports();
+  </script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#205f4f">
+  <title>التقارير | نظام المحاسبة</title>
+  <link rel="manifest" href="../manifest.json">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body data-page="reports">
+  <header>
+    <div class="brand">
+      <img src="../assets/logo.png" alt="شعار النظام">
+      <div>
+        <h1>التقارير المالية</h1>
+        <p data-user>جاري تحميل بيانات المستخدم...</p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <nav data-nav></nav>
+
+    <section class="content">
+      <div class="notice" data-toast>تقارير مالية شاملة مع خيارات تصدير وطباعة مباشرة.</div>
+
+      <section class="card">
+        <div class="toolbar between wrap">
+          <div class="toolbar wrap">
+            <div class="field-inline">
+              <label for="report-date-from">من تاريخ</label>
+              <input id="report-date-from" type="date">
+            </div>
+            <div class="field-inline">
+              <label for="report-date-to">إلى تاريخ</label>
+              <input id="report-date-to" type="date">
+            </div>
+            <div class="field-inline">
+              <label for="report-currency-filter">العملة</label>
+              <select id="report-currency-filter"></select>
+            </div>
+            <button id="report-apply-filters" class="secondary">تحديث التقارير</button>
+          </div>
+
+          <div class="toolbar">
+            <button id="report-export-csv" class="secondary" data-action="reports:export">تصدير CSV</button>
+            <button id="report-export-excel" class="secondary" data-action="reports:export">تصدير Excel</button>
+            <button id="report-print" class="ghost" data-action="reports:export">طباعة</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h3>تقرير الحسابات</h3>
+        <div id="report-accounts"></div>
+      </section>
+
+      <section class="card">
+        <h3>تقرير الأرباح والخسائر</h3>
+        <div id="report-profit-loss"></div>
+      </section>
+
+      <section class="card">
+        <h3>تقرير العمليات</h3>
+        <div id="report-transactions"></div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="footer">تصدير التقارير متاح بصيغ CSV وExcel مع طباعة فورية.</footer>
+
+  <script type="module" src="../app.js"></script>
+</body>
+</html>

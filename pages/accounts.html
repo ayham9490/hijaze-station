@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#205f4f">
+  <title>الحسابات | نظام المحاسبة</title>
+  <link rel="manifest" href="../manifest.json">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body data-page="accounts">
+  <header>
+    <div class="brand">
+      <img src="../assets/logo.png" alt="شعار النظام">
+      <div>
+        <h1>إدارة الحسابات</h1>
+        <p data-user>جاري تحميل بيانات المستخدم...</p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <nav data-nav></nav>
+
+    <section class="content">
+      <div class="notice" data-toast>أضف أو عدّل الحسابات مع تحديد النوع والعملة بدقة.</div>
+
+      <section class="card">
+        <h3>نموذج الحساب</h3>
+        <form id="account-form" autocomplete="off">
+          <input type="hidden" name="editing_id" value="">
+
+          <div class="grid-2">
+            <div>
+              <label for="account-name">اسم الحساب</label>
+              <input id="account-name" name="name" type="text" required placeholder="مثال: صندوق النقد">
+            </div>
+
+            <div>
+              <label for="account-type">نوع الحساب</label>
+              <select id="account-type" name="type" required></select>
+            </div>
+
+            <div>
+              <label for="account-currency">العملة</label>
+              <select id="account-currency" name="currency" required></select>
+            </div>
+
+            <div>
+              <label for="account-balance">الرصيد الافتتاحي</label>
+              <input id="account-balance" name="balance" type="number" min="0" step="0.01" value="0" required>
+            </div>
+          </div>
+
+          <div class="toolbar">
+            <button type="submit" data-action="accounts:create">حفظ الحساب</button>
+            <button type="button" id="cancel-account-edit" class="ghost" hidden>إلغاء التعديل</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="card">
+        <h3>قائمة الحسابات</h3>
+        <div id="accounts-table"></div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="footer">إدارة احترافية للحسابات تدعم كافة أنواع القيود.</footer>
+
+  <script type="module" src="../app.js"></script>
+</body>
+</html>

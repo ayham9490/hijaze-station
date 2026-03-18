@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>الإعدادات</title>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="manifest" href="../manifest.json">
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <img src="../assets/logo.png" alt="الشعار">
+      <div>
+        <h1>الإعدادات</h1>
+        <div data-user>جاري تحميل المستخدم...</div>
+      </div>
+    </div>
+  </header>
+  <main>
+    <nav data-nav></nav>
+    <section class="content">
+      <div class="notice" data-toast>يمكنك ضبط مفاتيح الاتصال والصلاحيات.</div>
+      <h3>إعداد Supabase</h3>
+      <form id="supabase-form">
+        <div>
+          <label>رابط المشروع (SUPABASE_URL)</label>
+          <input type="text" name="url" required>
+        </div>
+        <div>
+          <label>المفتاح العام (SUPABASE_ANON_KEY)</label>
+          <input type="text" name="key" required>
+        </div>
+        <button type="submit">حفظ المفاتيح</button>
+      </form>
+
+      <h3>إدارة الأدوار</h3>
+      <form id="role-form">
+        <div class="grid-2">
+          <div>
+            <label>المستخدم</label>
+            <select name="user_id" required></select>
+          </div>
+          <div>
+            <label>الدور</label>
+            <select name="role" required>
+              <option value="admin">مدير</option>
+              <option value="محاسب">محاسب</option>
+              <option value="مشاهد">مشاهد</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" data-protected>تحديث الدور</button>
+      </form>
+      <div id="users-table"></div>
+
+      <div class="toolbar">
+        <button class="danger" data-logout>تسجيل الخروج</button>
+      </div>
+    </section>
+  </main>
+  <div class="footer">إعدادات الاتصال والصلاحيات الآمنة.</div>
+
+  <script type="module">
+    import '../app.js';
+    import { getSupabase } from '../modules/supabase-client.js';
+    import { buildTable, showToast } from '../modules/ui.js';
+    import { requireRole } from '../modules/auth.js';
+
+    const supaForm = document.getElementById('supabase-form');
+    supaForm.url.value = localStorage.getItem('supabase_url') || '';
+    supaForm.key.value = localStorage.getItem('supabase_anon_key') || '';
+
+    supaForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      localStorage.setItem('supabase_url', supaForm.url.value.trim());
+      localStorage.setItem('supabase_anon_key', supaForm.key.value.trim());
+      showToast('تم حفظ مفاتيح الاتصال.');
+    });
+
+    const userSelect = document.querySelector('select[name="user_id"]');
+
+    const loadUsers = async () => {
+      try {
+        const supabase = getSupabase();
+        const { data, error } = await supabase.from('USERS').select('id,email,role,created_at');
+        if (error) throw error;
+        userSelect.innerHTML = data.map(u => `<option value="${u.id}">${u.email}</option>`).join('');
+        const rows = data.map(u => [u.email, u.role, new Date(u.created_at).toLocaleDateString('ar')]);
+        document.getElementById('users-table').innerHTML = buildTable(['البريد', 'الدور', 'تاريخ الإنشاء'], rows);
+      } catch (err) {
+        showToast('تعذر تحميل المستخدمين.', true);
+      }
+    };
+
+    document.getElementById('role-form').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!requireRole(['admin'])) return;
+      const data = Object.fromEntries(new FormData(event.target));
+      try {
+        const supabase = getSupabase();
+        const { error } = await supabase.from('USERS').update({ role: data.role }).eq('id', data.user_id);
+        if (error) throw error;
+        showToast('تم تحديث الدور بنجاح.');
+        loadUsers();
+      } catch (err) {
+        showToast('تعذر تحديث الدور.', true);
+      }
+    });
+
+    loadUsers();
+  </script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#205f4f">
+  <title>العمليات المالية | نظام المحاسبة</title>
+  <link rel="manifest" href="../manifest.json">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body data-page="transactions">
+  <header>
+    <div class="brand">
+      <img src="../assets/logo.png" alt="شعار النظام">
+      <div>
+        <h1>العمليات المالية</h1>
+        <p data-user>جاري تحميل بيانات المستخدم...</p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <nav data-nav></nav>
+
+    <section class="content">
+      <div class="notice" data-toast>أدخل القيد المحاسبي بنظام القيد المزدوج (مدين = دائن).</div>
+
+      <section class="card">
+        <h3>قيد محاسبي جديد</h3>
+        <form id="transaction-form" autocomplete="off">
+          <div class="grid-2">
+            <div>
+              <label for="tx-date">التاريخ</label>
+              <input id="tx-date" name="date" type="date" required>
+            </div>
+            <div>
+              <label for="tx-description">الوصف</label>
+              <input id="tx-description" name="description" type="text" required placeholder="مثال: تحصيل فاتورة مبيعات">
+            </div>
+
+            <div>
+              <label for="tx-debit">الحساب المدين</label>
+              <select id="tx-debit" name="debit_account" required></select>
+            </div>
+            <div>
+              <label for="tx-credit">الحساب الدائن</label>
+              <select id="tx-credit" name="credit_account" required></select>
+            </div>
+
+            <div>
+              <label for="tx-amount">المبلغ</label>
+              <input id="tx-amount" name="amount" type="number" min="0.01" step="0.01" required>
+            </div>
+            <div>
+              <label for="tx-currency">العملة</label>
+              <select id="tx-currency" name="currency" required></select>
+            </div>
+
+            <div>
+              <label for="tx-rate">سعر الصرف مقابل الدولار</label>
+              <input id="tx-rate" name="exchange_rate" type="number" min="0" step="0.000001" required>
+            </div>
+          </div>
+
+          <button type="submit" data-action="transactions:create">حفظ العملية</button>
+        </form>
+      </section>
+
+      <section class="card">
+        <div class="toolbar between">
+          <h3>سجل العمليات</h3>
+          <div class="toolbar">
+            <span class="badge">المعلّق للمزامنة: <strong id="pending-transactions-count">0</strong></span>
+            <button id="sync-transactions-btn" class="secondary" data-action="transactions:sync">مزامنة غير المتصل</button>
+          </div>
+        </div>
+        <div id="transactions-table"></div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="footer">محرك محاسبي مزدوج مع دعم كامل للعملات المتعددة.</footer>
+
+  <script type="module" src="../app.js"></script>
+</body>
+</html>

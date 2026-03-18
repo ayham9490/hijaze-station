@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#205f4f">
+  <title>لوحة التحكم | نظام المحاسبة</title>
+  <link rel="manifest" href="../manifest.json">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body data-page="dashboard">
+  <header>
+    <div class="brand">
+      <img src="../assets/logo.png" alt="شعار النظام">
+      <div>
+        <h1>لوحة التحكم</h1>
+        <p data-user>جاري تحميل بيانات المستخدم...</p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <nav data-nav></nav>
+
+    <section class="content">
+      <div class="notice" data-toast>يتم تحميل المؤشرات المالية الآن.</div>
+
+      <section class="cards">
+        <article class="card metric-card">
+          <h3>إجمالي الأرصدة (USD)</h3>
+          <strong id="dashboard-total-balances">-</strong>
+        </article>
+        <article class="card metric-card">
+          <h3>عدد الحسابات</h3>
+          <strong id="dashboard-account-count">-</strong>
+        </article>
+        <article class="card metric-card">
+          <h3>عمليات الشهر الحالي</h3>
+          <strong id="dashboard-month-transactions">-</strong>
+        </article>
+        <article class="card metric-card">
+          <h3>عمليات بانتظار المزامنة</h3>
+          <strong id="dashboard-pending-sync">-</strong>
+        </article>
+      </section>
+
+      <section class="card">
+        <h3>مخطط الإيرادات والمصروفات</h3>
+        <canvas id="dashboard-chart" class="chart"></canvas>
+      </section>
+
+      <section class="card">
+        <h3>ملخص الحسابات</h3>
+        <div id="dashboard-account-summary"></div>
+      </section>
+
+      <section class="card">
+        <h3>آخر العمليات</h3>
+        <div id="dashboard-latest-table"></div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="footer">رؤية فورية لوضعك المالي مع تحديثات لحظية.</footer>
+
+  <script type="module" src="../app.js"></script>
+</body>
+</html>
