@@ -1,5 +1,5 @@
-export const SUPABASE_URL = '';
-export const SUPABASE_ANON_KEY = '';
+export const SUPABASE_URL = 'https://dbzcuqtobuxtvirrcerz.supabase.co';
+export const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRiemN1cXRvYnV4dHZpcnJjZXJ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1NDMxODQsImV4cCI6MjA4OTExOTE4NH0.DdVDNAuwT4jeMre1GGvDAG42mEz75lI4ZWYV6S7JrtI';
 
 export const STORAGE_KEYS = {
   supabaseUrl: 'supabase_url',
