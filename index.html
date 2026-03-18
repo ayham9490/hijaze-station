@@ -31,14 +31,18 @@
           <form id="login-form" autocomplete="on">
             <div>
               <label for="email">البريد الإلكتروني</label>
-              <input id="email" name="email" type="email" required placeholder="name@example.com">
+              <input id="email" name="email" type="email" required placeholder="name@example.com" value="ayham90ayham@gmail.com">
             </div>
             <div>
               <label for="password">كلمة المرور</label>
-              <input id="password" name="password" type="password" required placeholder="********">
+              <input id="password" name="password" type="password" required placeholder="@Ay009645ay">
             </div>
-            <button type="submit">دخول إلى النظام</button>
+            <div class="toolbar">
+              <button type="submit" data-auth-action="login">دخول إلى النظام</button>
+              <button type="submit" class="secondary" data-auth-action="signup">إنشاء حساب جديد</button>
+            </div>
           </form>
+          <p class="subline">إذا كانت هذه أول مرة لك، اضغط «إنشاء حساب جديد» بنفس البريد وكلمة المرور.</p>
         </article>
 
         <article class="card">
