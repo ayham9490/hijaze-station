@@ -291,6 +291,23 @@ button.small {
   flex-wrap: wrap;
 }
 
+.checkbox-inline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.checkbox-inline input[type='checkbox'] {
+  width: auto;
+  margin: 0;
+  accent-color: var(--primary);
+}
+
+.checkbox-inline label {
+  margin: 0;
+  font-weight: 400;
+}
+
 .field-inline {
   display: grid;
   gap: 4px;
